@@ -27,7 +27,7 @@ Install requirement.txt
 pip3 install -r requirements.txt
 ```
 
-Run app.py. Input and Output Path are defined in the app.py.
+執行 app.py。 Input 和 Output path 已經定義在app.py里了.
 ```
 python3 app.py
 ```
@@ -64,10 +64,6 @@ Input的data為政府資料開放平臺上的[台灣電力公司_過去電力供
  <p align='center'>
   <img src='img/epochs_loss.png'>
  </p>
-       
-預測結果與validation data之對照圖：
-![image](https://user-images.githubusercontent.com/41318666/111896273-5b15b500-8a53-11eb-84aa-f7486a138ffc.png)
-粉線為prediction，黑線為validation
 
 
 ## Prediction Result
@@ -79,6 +75,18 @@ Input的data為政府資料開放平臺上的[台灣電力公司_過去電力供
   </p>
 
 ## Note
+
+  1) **Features 數目*
+      其實features數目不是越多越好，在這一份資料當中就含有各種各樣的features，但是有滿多都是缺值，也就是0的情況，所以蠻多都不能拿來用。我原本之前有用了前面幾個features(如: 尖峰負載，凈尖峰供電能力，水力，風力，太陽能發電等大眾特徵)，用出來的RMSE都相當高，約有400多左右，但是自從我只給模型備轉容量和備轉容量率，失誤就降下來了。
+
+  2) **典型的Time Series 模型表現不好**
+      一開始我不是就用LSTM的，我嘗試過了Naive Method, Prophet, Exponential Smoothing, SARIMA, Holt-Winter。而比較好的只有Exponential和Holt Winter 但似乎效果也沒有讓我很滿意，RMSE只有400～600之間，完全下不去。所以我個人認為還是要可以手動調整的LSTM模型的適應性會比較好，得到的結果也比較令人滿意。
+
+  3) **Split Data的比例分配**
+      偷偷將一個小秘密，如果你把train和valid的分配比例調到train越多，效果會有奇效(當然，這裡資料量少，training data越多，模型學的越好)，但是如果一般用8:2 RMSE會是400多，但是9:1 RMSE會直接掉到100多。因為平均失誤的越少，數值越低。
+      
+    
+
 
 ## Keywords
   - **Time Series**
