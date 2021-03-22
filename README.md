@@ -17,6 +17,9 @@ requirements.txt目前還是手刻，若有python版本和lib版本相衝或不�
   - **keras == 2.4.3**
   - **matplotlib == 3.2.2**
   - **numpy == 1.19.5**
+  - **sklearn == 0.24.1**
+  - **pydot == 1.4.2**
+  - **graphviz == 0.16**
 
 # Build
 Install requirement.txt
@@ -28,7 +31,7 @@ Run app.py. Input and Output Path are defined in the app.py.
 ```
 python3 app.py
 ```
-強烈建議直接執行ipynb檔案來直接看我們在各個區塊
+強烈建議直接執行ipynb檔案來直接看我們在各個區塊的輸出結果。
 
 ## Input data
 Input的data為政府資料開放平臺上的[台灣電力公司_過去電力供需資訊.csv](https://data.gov.tw/dataset/19995)。在這份資料中有共有**397**個 ``entries`` 和 **71** 個 ``features``。而本模型只使用的features為 ``備轉容量 (MW)`` 與 ``備轉容量率（%)`` 。且 ``traning data`` 與 ``validation data`` 以比例為**9:1**做切割。
