@@ -13,29 +13,76 @@ import tensorflow as tf
 import math
 from datetime import datetime
 import csv
-warnings.filterwarnings("ignore")
+
+def calculate_rmse(valid, pred):
+  rmse = 0
+
+  print('Pred shape:',pred.shape)
+  print('Valid shape:',valid.shape)
+  # print(pred[0,:,0])
+  # print(valid[:7,:,0])
+
+  for index in range(y_valid.shape[0]):
+    rmse += np.sqrt(np.mean((pred[index,:,0]-y_valid[index,:,0])**2))
+  rmse /= y_valid.shape[0]
+  print('\n===========================\n')
+  print('RMSE:{}'.format(rmse))
+  print('\n===========================\n')
+
+def generate_csv(result):
+  initial_date = 20210323
+  try:
+    with open('submission.csv', mode='w') as csv_file:
+      colums = ['date','operating_reserve(MW)']
+      writer = csv.DictWriter(csv_file, fieldnames=colums)
+      writer.writeheader()
+      for index in range(7):
+        writer.writerow({'date':initial_date+index, 'operating_reserve(MW)':int(result[index])})
+      csv_file.seek(0, os.SEEK_END)
+      csv_file.truncate()
+  except:
+    raise Exception('Your result shape is not 7, please check your code!')
+
+def split_dataset(dataset, n_past, n_future):
+  X, Y = [], []
+  for i in range(len(dataset)):
+    if (i + n_past + n_future) > len(dataset):
+      break
+    x = dataset[i:i+n_past, :]
+    y = dataset[i+n_past:i+n_past+n_future, :]
+    X.append(x)
+    Y.append(y)  
+  return np.array(X), np.array(Y)
 
 
+
+
+
+# Path
 main_path = 'dataset'
 print(os.listdir(main_path))
 
+
+# Variables
 n_past = 7
 n_future = 7
 n_features = 2
 
-# Drop out the columns that we aren't looking for
+
+# Drop out the columns that we don't need
 df = pd.read_csv(os.path.join(main_path,'台灣電力公司_過去電力供需資訊.csv'))
 df.drop(df.iloc[:, 5:], inplace = True, axis = 1)
 df.drop(df.iloc[:, 0:3], inplace = True, axis = 1)
 print(df.head(10))
 
+
+# Train and Valid Data Split
 print(len(df))
-# Train Valid Split
 train_df = df[:math.ceil(len(df) * 0.9)]
 valid_df = df[math.ceil(len(df) * 0.9):]
-
 print(train_df.shape)
 print(valid_df.shape)
+
 
 # Scaling
 train = train_df
@@ -55,18 +102,8 @@ for i in train_df.columns:
   scalers['scaler_i'] = scaler
   valid[i] = s
 
-# Convert Series to Samples
-def split_dataset(dataset, n_past, n_future):
-  X, Y = [], []
-  for i in range(len(dataset)):
-    if (i + n_past + n_future) > len(dataset):
-      break
-    x = dataset[i:i+n_past, :]
-    y = dataset[i+n_past:i+n_past+n_future, :]
-    X.append(x)
-    Y.append(y)  
-  return np.array(X), np.array(Y)
 
+# Convert Series to Samples
 x_train, y_train = split_dataset(train.values, n_past, n_future)
 x_train = x_train.reshape((x_train.shape[0], x_train.shape[1], n_features))
 y_train = y_train.reshape((y_train.shape[0], y_train.shape[1], n_features))
@@ -80,6 +117,8 @@ print(y_train.shape)
 print(x_valid.shape)
 print(y_valid.shape)
 
+
+# Define Model
 encoder_inputs = tf.keras.layers.Input(shape=(n_past, n_features))
 encoder_l1 = tf.keras.layers.LSTM(100,return_sequences = True, return_state=True)
 encoder_outputs1 = encoder_l1(encoder_inputs)
@@ -95,14 +134,17 @@ decoder_l2 = tf.keras.layers.LSTM(100, return_sequences=True)(decoder_l1,initial
 decoder_outputs2 = tf.keras.layers.TimeDistributed(tf.keras.layers.Dense(n_features))(decoder_l2)
 # #
 model = tf.keras.models.Model(encoder_inputs,decoder_outputs2)
-
 model.summary()
 
+
+# Compile and Fit
 reduce_lr = tf.keras.callbacks.LearningRateScheduler(lambda x: 1e-3 * 0.90 ** x)
 callback = EarlyStopping(monitor='loss', patience=10, verbose=1, mode='auto')
 model.compile(optimizer=Adam(), loss='mean_squared_error')
 history = model.fit(x_train,y_train,epochs=50,validation_data=(x_valid,y_valid),batch_size=32,verbose=2,callbacks=[reduce_lr,callback])
 
+
+# Ploting Model Loss
 plt.plot(history.history['loss'])
 plt.plot(history.history['val_loss'])
 plt.title("Model Loss")
@@ -112,6 +154,7 @@ plt.legend(['Train', 'Valid'])
 plt.show()
 
 
+# Predict
 pred = model.predict(x_valid)
 # get date data
 # df = pd.read_csv(os.path.join(main_path,'台灣電力公司_過去電力供需資訊.csv'))
@@ -158,6 +201,7 @@ pred = model.predict(x_valid)
 # leg.legendHandles[1].set_color('#232323')
 # plt.show()
 
+
 # Denormalize
 for index,i in enumerate(train_df.columns):
     scaler = scalers['scaler_'+i]    
@@ -166,35 +210,9 @@ for index,i in enumerate(train_df.columns):
     y_train[:,:,index]=scaler.inverse_transform(y_train[:,:,index])
     y_valid[:,:,index]=scaler.inverse_transform(y_valid[:,:,index])
 
-
-def calculate_rmse(valid, pred):
-  rmse = 0
-
-  print('Pred shape:',pred.shape)
-  print('Valid shape:',valid.shape)
-  # print(pred[0,:,0])
-  # print(valid[:7,:,0])
-
-  for index in range(y_valid.shape[0]):
-    rmse += np.sqrt(np.mean((pred[index,:,0]-y_valid[index,:,0])**2))
-  rmse /= y_valid.shape[0]
-  print('\n===========================\n')
-  print('RMSE:{}'.format(rmse))
-  print('\n===========================\n')
-
-def generate_csv(result):
-  initial_date = 20210323
-  try:
-    with open('submission.csv', mode='w') as csv_file:
-      colums = ['date','operating_reserve(MW)']
-      writer = csv.DictWriter(csv_file, fieldnames=colums)
-      writer.writeheader()
-      for index in range(7):
-        writer.writerow({'date':initial_date+index, 'operating_reserve(MW)':int(result[index])})
-      csv_file.seek(0, os.SEEK_END)
-      csv_file.truncate()
-  except:
-    raise Exception('Your result shape is not 7, please check your code!')
-
+# Calculate RMSE
 calculate_rmse(y_valid, pred)
+
+
+# Generate output result to CSV file
 generate_csv(pred[0,:,0])
