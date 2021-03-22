@@ -29,10 +29,13 @@ df.drop(df.iloc[:, 5:], inplace = True, axis = 1)
 df.drop(df.iloc[:, 0:3], inplace = True, axis = 1)
 print(df.head(10))
 
-
+print(len(df))
 # Train Valid Split
 train_df = df[:math.ceil(len(df) * 0.9)]
 valid_df = df[math.ceil(len(df) * 0.9):]
+
+print(train_df.shape)
+print(valid_df.shape)
 
 # Scaling
 train = train_df
@@ -64,7 +67,6 @@ def split_dataset(dataset, n_past, n_future):
     Y.append(y)  
   return np.array(X), np.array(Y)
 
-
 x_train, y_train = split_dataset(train.values, n_past, n_future)
 x_train = x_train.reshape((x_train.shape[0], x_train.shape[1], n_features))
 y_train = y_train.reshape((y_train.shape[0], y_train.shape[1], n_features))
@@ -73,10 +75,10 @@ x_valid, y_valid = split_dataset(valid.values, n_past, n_future)
 x_valid = x_valid.reshape((x_valid.shape[0], x_valid.shape[1], n_features))
 y_valid = y_valid.reshape((y_valid.shape[0], y_valid.shape[1], n_features))
 
-# print(x_train.shape)
-# print(y_train.shape)
-# print(x_valid.shape)
-# print(y_valid.shape)
+print(x_train.shape)
+print(y_train.shape)
+print(x_valid.shape)
+print(y_valid.shape)
 
 encoder_inputs = tf.keras.layers.Input(shape=(n_past, n_features))
 encoder_l1 = tf.keras.layers.LSTM(100,return_sequences = True, return_state=True)
@@ -176,7 +178,9 @@ def calculate_rmse(valid, pred):
   for index in range(y_valid.shape[0]):
     rmse += np.sqrt(np.mean((pred[index,:,0]-y_valid[index,:,0])**2))
   rmse /= y_valid.shape[0]
-  print(rmse)
+  print('\n===========================\n')
+  print('RMSE:{}'.format(rmse))
+  print('\n===========================\n')
 
 def generate_csv(result):
   initial_date = 20210323
