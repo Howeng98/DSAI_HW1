@@ -76,7 +76,7 @@ Input的data為政府資料開放平臺上的[台灣電力公司_過去電力供
 
 ## Note
 
-  1) **Features 數目*
+  1) **Features 數目**
       其實features數目不是越多越好，在這一份資料當中就含有各種各樣的features，但是有滿多都是缺值，也就是0的情況，所以蠻多都不能拿來用。我原本之前有用了前面幾個features(如: 尖峰負載，凈尖峰供電能力，水力，風力，太陽能發電等大眾特徵)，用出來的RMSE都相當高，約有400多左右，但是自從我只給模型備轉容量和備轉容量率，失誤就降下來了。
 
   2) **典型的Time Series 模型表現不好**
@@ -85,6 +85,8 @@ Input的data為政府資料開放平臺上的[台灣電力公司_過去電力供
   3) **Split Data的比例分配**
       偷偷將一個小秘密，如果你把train和valid的分配比例調到train越多，效果會有奇效(當然，這裡資料量少，training data越多，模型學的越好)，但是如果一般用8:2 RMSE會是400多，但是9:1 RMSE會直接掉到100多。因為平均失誤的越少，數值越低。
       
+  4) **Time Series 轉換成 Samples 時的定義**
+      我這裡是使用前七天為依據，後七天為結果，但是也可以設定成前七天配第八天為label的組合，或者前十四天，三十天為依據等等。或者n:n+7為train_data,n+1:n+8為label 也可以，用不同方式會有不同結果。下次可以嘗試看看。
     
 
 
@@ -99,6 +101,7 @@ Input的data為政府資料開放平臺上的[台灣電力公司_過去電力供
 
 ## References
   - [Dropbox Homework Description](shorturl.at/nozNX)
-  - https://www.analyticsvidhya.com/blog/2020/10/multivariate-multi-step-time-series-forecasting-using-stacked-lstm-sequence-to-sequence-autoencoder-in-tensorflow-2-0-keras/
+  - https://machinelearningmastery.com/time-series-prediction-lstm-recurrent-neural-networks-python-keras/
+  - https://towardsdatascience.com/lstm-time-series-forecasting-predicting-stock-prices-using-an-lstm-model-6223e9644a2f
   - https://medium.datadriveninvestor.com/multivariate-time-series-using-rnn-with-keras-7f78f4488679
 
