@@ -31,13 +31,13 @@ python3 app.py
 強烈建議直接執行ipynb檔案來直接看我們在各個區塊
 
 ## Input data
-Input的data為政府資料開放平臺上的[台灣電力公司_過去電力供需資訊.csv](https://data.gov.tw/dataset/19995)資料中的``備轉容量 (MW)``與``備轉容量率（%)``。且``traning data``與``validation data``以比例為**9:1**做切割。
+Input的data為政府資料開放平臺上的[台灣電力公司_過去電力供需資訊.csv](https://data.gov.tw/dataset/19995)。在這份資料中有共有**397**個 ``entries`` 和 **71** 個 ``features``。而本模型只使用的features為 ``備轉容量 (MW)`` 與 ``備轉容量率（%)`` 。且 ``traning data`` 與 ``validation data`` 以比例為**9:1**做切割。
   <p align='center'>
     <img src='img/train_valid.png'>
   </p>
 
 ## Scaling
-為了加快模型收斂找到最佳參數組合，這裡使用``MinMaxScaler``把資料重新scaling成**-1**至**1**之間。
+為了加快模型收斂找到最佳參數組合，這裡使用``MinMaxScaler``把資料重新scaling成 **-1** 至 **1** 之間。
 
 ## Model Structure
   <p align='center'>
