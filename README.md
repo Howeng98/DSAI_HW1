@@ -37,9 +37,17 @@ python3 app.py
 ## Scaling
 
 ## Model Structure
+  <p align='center'>
+    <img src='img/model.png'>
+  </p>
 
 ## Training
-epochs設定為50，每一輪所得之loss約位於0.02左右：
+``epochs``設定為**50**，最後``loss``約位於**0.04**左右：
+<p align='center'>
+  <img src='img/loss.png'>
+ </p>
+ 
+
 ![image](https://user-images.githubusercontent.com/41318666/111903354-dfc8f900-8a7c-11eb-9f35-fbed1932b49d.png)
 
 將所得資料視覺化後：
