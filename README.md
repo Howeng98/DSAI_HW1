@@ -46,29 +46,33 @@ Input的data為政府資料開放平臺上的[台灣電力公司_過去電力供
   <p align='center'>
     <img src='img/model.png'>
   </p>
+  
+  <p align='center'>
+    <img src='img/model_parameters.png'>
+  </p>
 
 ## Training
 ``epochs``設定為**50**，最後``loss``約位於**0.04**左右：
-<p align='center'>
+ <p align='center'>
   <img src='img/loss.png'>
  </p>
  
-
-![image](https://user-images.githubusercontent.com/41318666/111903354-dfc8f900-8a7c-11eb-9f35-fbed1932b49d.png)
-
-將所得資料視覺化後：
-![image](https://user-images.githubusercontent.com/41318666/111903376-fb340400-8a7c-11eb-8c52-7e3119b605a3.png)
-
+ <p align='center'>
+  <img src='img/epochs_loss.png'>
+ </p>
+       
 預測結果與validation data之對照圖：
 ![image](https://user-images.githubusercontent.com/41318666/111896273-5b15b500-8a53-11eb-84aa-f7486a138ffc.png)
 粉線為prediction，黑線為validation
 
-在經過計算後，可得RMSE=434左右
 
 ## Prediction Result
 
-由於資料只有給予至2021/01/31，故往後的資料皆是基於之前所預測的結果為基礎進行預測
-以此模型進行2021/03/23~2021/03/29的備載容量預測結果：
+以此模型進行2021/03/23~2021/03/29的備載容量預測結果。
+
+  <p align='center'>
+    <img src='img/result.png'>
+  </p>
 
 ## Note
 
