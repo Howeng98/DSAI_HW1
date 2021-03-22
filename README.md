@@ -34,7 +34,11 @@ python3 app.py
 作為input的資料為政府資料開放平臺上的「近三年每日尖峰備轉容量率」資料中的備轉容量率（％）與備轉容量（MW）
 且testing data與validation data設定為9:1
 
-## Model Training
+## Scaling
+
+## Model Structure
+
+## Training
 epochs設定為50，每一輪所得之loss約位於0.02左右：
 ![image](https://user-images.githubusercontent.com/41318666/111903354-dfc8f900-8a7c-11eb-9f35-fbed1932b49d.png)
 
@@ -47,7 +51,7 @@ epochs設定為50，每一輪所得之loss約位於0.02左右：
 
 在經過計算後，可得RMSE=434左右
 
-## Result
+## Prediction Result
 
 由於資料只有給予至2021/01/31，故往後的資料皆是基於之前所預測的結果為基礎進行預測
 以此模型進行2021/03/23~2021/03/29的備載容量預測結果：
