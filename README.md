@@ -4,13 +4,30 @@
   <img src='img/TimeSeries.jpg'>
 </p>
 
-本作業所使用的time series模型為**LSTM**，並以前七天的資料來當作每次預測的依據，去預測接下來後七天的資料。
+本作業所使用的time series模型為**LSTM**，並以前七天的資料來當作每次預測的依據，去預測接下來後七天的資料。評估模型的表現是以RMSE為標準，而該模型最後的結果是約**434.58**。後面也會視覺化validation的情況，我們可以根據線段的重疊度來大概判斷模型的準確率。
+
+# Environment
+  - **Python 3.8.3**
+  - **Ubuntu 20.04.2 LTS**
 
 # Requirement
+requirements.txt目前還是手刻，若有python版本和lib版本相衝或不相容，還請自行解決。
+
   - **pandas == 1.2.3**
   - **keras == 2.4.3**
   - **matplotlib == 3.2.2**
   - **numpy == 1.19.5**
+
+# Build
+Install requirement.txt
+```
+pip3 install -r requirements.txt
+```
+
+Run app.py. Input and Output Path are defined in the app.py.
+```
+python3 app.py
+```
 
 ## Input data
 作為input的資料為政府資料開放平臺上的「近三年每日尖峰備轉容量率」資料中的備轉容量率（％）與備轉容量（MW）
@@ -34,7 +51,10 @@ epochs設定為50，每一輪所得之loss約位於0.02左右：
 由於資料只有給予至2021/01/31，故往後的資料皆是基於之前所預測的結果為基礎進行預測
 以此模型進行2021/03/23~2021/03/29的備載容量預測結果：
 
+## Note
 
+## Keywords
 
+## References
 
 
