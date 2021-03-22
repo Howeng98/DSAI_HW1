@@ -4,7 +4,7 @@
   <img src='img/TimeSeries.jpg'>
 </p>
 
-本作業所使用的time series模型為**LSTM**，並以前七天的資料來當作每次預測的依據，去預測接下來後七天的資料。最終目標是預測20210323到20210329為期七天的備轉容量數值。評估模型的表現是以RMSE為標準，而本模型的表現結果約為 **RMSE:126.46** 。後面也會視覺化Validation的情況，我們可以根據線段的重疊度來大概判斷模型的準確率。
+本作業所使用的 ``time series`` 模型為 **LSTM** ，並以前七天的資料來當作每次預測的依據，去預測接下來後七天的資料。最終目標是預測 **20210323** 到 **20210329** 為期七天的備轉容量數值。評估模型的表現是以 ``RMSE`` 為標準，而本模型的RMSE表現結果約為 **126.46** 。後面也會視覺化Validation的情況，我們可以根據線段的重疊度來大概判斷模型的準確率。
 
 # Environment
   - **Python 3.8.3**
@@ -35,6 +35,10 @@ python3 app.py
 
 ## Input data
 Input的data為政府資料開放平臺上的[台灣電力公司_過去電力供需資訊.csv](https://data.gov.tw/dataset/19995)。在這份資料中有共有**397**個 ``entries`` 和 **71** 個 ``features``。而本模型只使用的features為 ``備轉容量 (MW)`` 與 ``備轉容量率（%)`` 。且 ``traning data`` 與 ``validation data`` 以比例為**9:1**做切割。
+  <p align='center'>
+    <img src='img/dataframe_head10.png'>
+  </p>
+
   <p align='center'>
     <img src='img/train_valid.png'>
   </p>
