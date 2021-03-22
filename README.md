@@ -57,5 +57,7 @@ epochs設定為50，每一輪所得之loss約位於0.02左右：
 ## Keywords
 
 ## References
-
+  * [Dropbox Homework Description](shorturl.at/nozNX)
+  * https://www.analyticsvidhya.com/blog/2020/10/multivariate-multi-step-time-series-forecasting-using-stacked-lstm-sequence-to-sequence-autoencoder-in-tensorflow-2-0-keras/
+  * https://medium.datadriveninvestor.com/multivariate-time-series-using-rnn-with-keras-7f78f4488679
 
