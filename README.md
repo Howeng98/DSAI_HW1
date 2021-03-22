@@ -28,6 +28,7 @@ Run app.py. Input and Output Path are defined in the app.py.
 ```
 python3 app.py
 ```
+強烈建議直接執行ipynb檔案來直接看我們在各個區塊
 
 ## Input data
 作為input的資料為政府資料開放平臺上的「近三年每日尖峰備轉容量率」資料中的備轉容量率（％）與備轉容量（MW）
