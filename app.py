@@ -8,6 +8,7 @@ from keras.models import Sequential
 from keras.layers import Dense, Dropout, Activation, Flatten, LSTM, TimeDistributed, RepeatVector, Bidirectional
 from keras.optimizers import Adam
 from keras.callbacks import EarlyStopping, ModelCheckpoint
+from keras.utils import plot_model
 from sklearn.preprocessing import MinMaxScaler
 import tensorflow as tf
 import math
@@ -83,6 +84,20 @@ valid_df = df[math.ceil(len(df) * 0.9):]
 print(train_df.shape)
 print(valid_df.shape)
 
+# Plotting data
+train_df['備轉容量(MW)'].plot(figsize=(20, 10), fontsize=14, label='train')
+valid_df['備轉容量(MW)'].plot(figsize=(20, 10), fontsize=14, label='valid', title="Operating Reserve in 20200101~20210131")
+# prediction = result[:,:,0]
+# prediction = pd.DataFrame(prediction[-1], columns=['備轉容量(MW)'])
+# prediction.plot(figsize=(20, 10), fontsize=14)
+plt.xticks(fontsize = 12)
+plt.yticks(fontsize = 12)
+plt.xlabel('Time (Day)')
+plt.ylabel('Operating Reserve (MW)')
+plt.legend()
+plt.grid(True)
+plt.show()
+
 
 # Scaling
 train = train_df
@@ -119,23 +134,22 @@ print(y_valid.shape)
 
 
 # Define Model
-encoder_inputs = tf.keras.layers.Input(shape=(n_past, n_features))
+inputs = tf.keras.layers.Input(shape=(n_past, n_features))
 encoder_l1 = tf.keras.layers.LSTM(100,return_sequences = True, return_state=True)
-encoder_outputs1 = encoder_l1(encoder_inputs)
-encoder_states1 = encoder_outputs1[1:]
+output1 = encoder_l1(inputs)
+encoder_states1 = output1[1:]
 encoder_l2 = tf.keras.layers.LSTM(100, return_state=True)
-encoder_outputs2 = encoder_l2(encoder_outputs1[0])
-encoder_states2 = encoder_outputs2[1:]
-#
-decoder_inputs = tf.keras.layers.RepeatVector(n_future)(encoder_outputs2[0])
-#
+output2 = encoder_l2(output1[0])
+encoder_states2 = output2[1:]
+decoder_inputs = tf.keras.layers.RepeatVector(n_future)(output2[0])
+
 decoder_l1 = tf.keras.layers.LSTM(100, return_sequences=True)(decoder_inputs,initial_state = encoder_states1)
 decoder_l2 = tf.keras.layers.LSTM(100, return_sequences=True)(decoder_l1,initial_state = encoder_states2)
 decoder_outputs2 = tf.keras.layers.TimeDistributed(tf.keras.layers.Dense(n_features))(decoder_l2)
-# #
-model = tf.keras.models.Model(encoder_inputs,decoder_outputs2)
-model.summary()
 
+model = tf.keras.models.Model(inputs,decoder_outputs2)
+model.summary()
+plot_model(model, show_shapes=True, to_file='img/model.png')
 
 # Compile and Fit
 reduce_lr = tf.keras.callbacks.LearningRateScheduler(lambda x: 1e-3 * 0.90 ** x)

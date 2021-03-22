@@ -4,3 +4,5 @@ matplotlib==3.2.2
 numpy==1.19.5
 pandas==1.2.3
 sklearn==0.24.1
+pydot==1.4.2
+graphviz==0.16
