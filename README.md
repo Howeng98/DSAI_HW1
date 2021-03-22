@@ -42,7 +42,7 @@ python3 app.py
   </p>
 
 ## Training
-``epochs``設定為**50**，最後``loss``約位於**0.02**左右：
+``epochs``設定為**50**，最後``loss``約位於**0.04**左右：
 <p align='center'>
   <img src='img/loss.png'>
  </p>
