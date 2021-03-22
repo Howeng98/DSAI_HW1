@@ -1,6 +1,11 @@
-# DSAI_HW1
-## Metholagy
-本作業所使用的time series模型為**LSTM**，以前七天的資料來預測後七天的資料，且將數值收斂於-1～1之間
+# DSAI_HW1   Electricity Forecasting
+本作業所使用的time series模型為**LSTM**，並以前七天的資料來當作每次預測的依據，去預測接下來後七天的資料。
+
+# Requirement
+  - **pandas == 1.2.3**
+  - **keras == 2.4.3**
+  - **matplotlib == 3.2.2**
+  - **numpy == 1.19.5**
 
 ## Input data
 作為input的資料為政府資料開放平臺上的「近三年每日尖峰備轉容量率」資料中的備轉容量率（％）與備轉容量（MW）
