@@ -1,4 +1,9 @@
 # DSAI_HW1   Electricity Forecasting
+
+<p align="center">
+  <img src='img/TimeSeries.jpg'>
+</p>
+
 本作業所使用的time series模型為**LSTM**，並以前七天的資料來當作每次預測的依據，去預測接下來後七天的資料。
 
 # Requirement
