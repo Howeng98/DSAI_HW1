@@ -123,6 +123,7 @@ x_train, y_train = split_dataset(train.values, n_past, n_future)
 x_train = x_train.reshape((x_train.shape[0], x_train.shape[1], n_features))
 y_train = y_train.reshape((y_train.shape[0], y_train.shape[1], n_features))
 
+# Split dataset
 x_valid, y_valid = split_dataset(valid.values, n_past, n_future)
 x_valid = x_valid.reshape((x_valid.shape[0], x_valid.shape[1], n_features))
 y_valid = y_valid.reshape((y_valid.shape[0], y_valid.shape[1], n_features))
@@ -170,50 +171,7 @@ plt.show()
 
 # Predict
 pred = model.predict(x_valid)
-# get date data
-# df = pd.read_csv(os.path.join(main_path,'台灣電力公司_過去電力供需資訊.csv'))
-# df.drop(df.iloc[:, 7:-3], inplace = True, axis = 1)
-# df.drop(df.iloc[:, 0:1], inplace = True, axis = 1)
-# l_time = df.to_numpy()
- 
 
-# Plotting data
-# print(train.index)
-# print(valid.index)
-# print(pred.shape)
-# cp = train.copy()
-# print(cp.shape)
-# cp[317:317+67,:] = pred[:,0,2]
-# train['備轉容量(萬瓩)'].plot(figsize=(20, 10), fontsize=14)
-
-# # Plotting prediction
-# # print(pred.info)
-# plt.subplots_adjust(left=None, bottom=None, right=3, top=2, wspace=None, hspace=None)
-# # plt.subplot(2, 1, 1)
-# print(pred.shape)
-# xs = [datetime.strptime(d[0], '%m/%d/%Y').date() for d in l_time[2340:]]
-# l1 = plt.plot(xs, pred[:,:,0])
-# plt.ylim(-0.6, 0.6)
-# plt.xticks(fontsize = 12)
-# plt.yticks(fontsize = 12)
-# plt.xlabel('Time (day)')
-# plt.ylabel('Operating Reserve (MW)')
-# plt.grid(True)
-
-
-# # Plotting validation
-# # plt.subplot(2, 1, 2)
-
-# l2 = plt.plot(xs, valid['備轉容量(MW)'][13:], '#232323')
-# # valid['備轉容量(MW)'].plot(figsize=(20, 10), fontsize=14, )
-# # ax = plt.gca()
-# # ax.spines['bottom'].set_position(('data', 0))
-# # ax.spines['left'].set_position(('data', 0))
-
-# leg = plt.legend(l1+l2, labels=['prediction', 'validation'], loc='best')
-# leg.legendHandles[0].set_color('#FF60AF')
-# leg.legendHandles[1].set_color('#232323')
-# plt.show()
 
 
 # Denormalize
@@ -223,6 +181,22 @@ for index,i in enumerate(train_df.columns):
     
     y_train[:,:,index]=scaler.inverse_transform(y_train[:,:,index])
     y_valid[:,:,index]=scaler.inverse_transform(y_valid[:,:,index])
+
+# # Ploting
+# for i in range(y_valid.shape[0]):
+#   plt.plot(y_valid[i,:,0], label='Ground Truth')
+#   plt.plot(pred[i,:,0], label='Prediction')
+#   # valid_df['備轉容量(MW)'].plot(figsize=(20, 10), fontsize=14, label='valid', title="Operating Reserve in 20200101~20210131")
+#   # prediction = result[:,:,0]
+#   # prediction = pd.DataFrame(prediction[-1], columns=['備轉容量(MW)'])
+#   # prediction.plot(figsize=(20, 10), fontsize=14)
+#   plt.xticks(fontsize = 12)
+#   plt.yticks(fontsize = 12)
+#   plt.xlabel('Time (Day)')
+#   plt.ylabel('Operating Reserve (MW)')
+#   plt.legend()
+#   plt.grid(True)
+# plt.show()
 
 # Calculate RMSE
 calculate_rmse(y_valid, pred)
